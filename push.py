@@ -33,12 +33,8 @@ def push_alpha_to_telegram(tweet_data):
     
     # 构建推送消息模板
     message = (
-        f"🚀 Alpha信息推荐\n"
-        f"━━━━━━━━━━━━━━━━━━━━\n"
         f"📊 推荐理由：{tweet_data['recommendation_reason']}\n\n"
-        f"👤 发帖者：{tweet_data['username']}\n"
-        f"🆔 用户ID：{tweet_data['author_id']}\n"
-        f"⏰ 发帖时间：{tweet_data['time_since_published']}前\n\n"
+        f"👤 发帖者：{tweet_data['username']} {tweet_data['author_id']}\n {tweet_data['time_since_published']}前\n"
         f"📝 推文内容：\n{tweet_data['tweet_text']}\n"
     )
     
