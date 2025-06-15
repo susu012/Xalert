@@ -1,0 +1,34 @@
+加密货币中的“Alpha信息”是指能够提供超额收益（超越市场平均水平或基准指数的收益）的、不为大众所知的、有价值的信息，这种信息由于经济价值，往往具有实效性。
+
+你的任务是分析我通过脚本抓取的推特推文内容，帮我看看这些推文内容中有没有Alpha信息，并按指定的json格式把含有Alpha信息的推文返回给我。
+值得注意的是，如果信息中包含以下内容根据我的经验请不要推荐：
+1. 明确指出一个低市值、开发者已跑路但现由社区接管的项目，这一般是诈骗
+2. 把永续合约用来赌博而不是利用其金融衍生品工具属性进行套利的内容，这一般是冠冕堂皇的赌博
+3. Alpha信息一般来自自然人的自然语言分享，如果一篇推文看起来像广告语气，不像是自发的分享，请你也不要推荐，例如：“每日200U收益？Sol链套利机器人了解一下 GM，今天分享一个实用的sol链网格交易机器人，支持动态网格/RSI策略，选择合适的代币，一天能平稳收益50-200美金。 AD真实数据及策略分享：https://t.me/rich_adul/376原博主链接：https://t.me/follow_step_bot?start=8F939D4H…AD专属链接：https://t.me/follow_step_bot?start=P99Evx43…”
+4. 和yap、kaito、cookies、“嘴撸”有关的内容，这是一些臭名昭著的广告营销内容，大多数是AI内容农场自动生产的
+要返回给我的json根节点只有一个"recommended_tweets"字段，其存储一个数组，数组里每个元素是一个json对象，每个数组里的json对象都用来存储了“推文的推荐理由”和“含有Alpha信息的推文”
+具体而言，数组里每个元素的json对象都具有"recommendation_reason"、"username"、"author_id"、"time_since_published"、"tweet_text"五个字段，如果没找到含有Alpha信息的推文，那么recommended_tweets字段的元素个数为0也可以
+其中“recommendation_reason”键的值存储推荐理由，请你填入一句话作为你为什么推荐它的理由；"username"的值为发帖者的“全名”；“author_id”的值为@开头的发帖者独一无二的用户id；"time_since_published"的值为距离发帖到现在已经过去的时间；"tweet_text"的值为含有Alpha信息的推文内容，请注意如果推文中存在换行，遵循json规范替换成转义字符\n
+一个典型示例：
+{
+    "recommended_tweets": [
+        {
+            "recommendation_reason":"套利、撸毛、MEV（最大可提取价值）方面的信息",
+            "username":"秋田散人"
+            "author_id":"@lnkybtc"
+            "time_since_published":"17小时",
+            "tweet_text":"讲一些关于套利的逻辑。\n对于圈内人，可以思考一下为什么一方cex刚上币的时候，或者跨链桥刚建立资产映射的时候，或多或少都有一些财富效应。\n实质是因为对于同一个东西的定价，在完全不同、或者尚未充分连接的两个经济系统内是有极大出入的。"
+        },
+        {
+            "recommendation_reason":"通过消耗电脑算力进行挖矿获取加密资产的信息",
+            "username":"zzc🧪Building Alkanes CH₄💥"
+            "author_id":"@zzc1520642"
+            "time_since_published":"18小时",
+            "tweet_text":"btc挖矿，快打\n项目网站：https://silicoin.xyz\n链接钱包直接挖\n挖中间的，电脑好可以挖最后一个\n\n前提分utxo（5-10）gas给3\n等utxo的交易过块，就去框框挖~\nhttps://ybot.io/#"
+        }
+    ]
+}
+警告提醒：我是一个很没有耐心的人，除了这个json，请你不要返回任何额外的信息，这个json也不需要用markdown的代码包裹，返回纯json格式即可。
+
+下面是我用脚本抓取到的推特首页的推荐流，推文和推文之间用markdown的---分隔符线分割，每条推文从上到下是发帖者的“全名”、@开头的发帖者独一无二的用户id、距离发帖到现在已经过去的时间、推文内容等，值得注意的是，有些推文中含有“引用”字样，这是由于引用了其它推文，并非属于本篇推文内容的一部分，这些被引用的推文请你排除掉，不要纳入tweet_text
+请你仔细辨别我抓取的推文中的元素，完成任务并返回正确的json给我：

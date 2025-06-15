@@ -1,0 +1,15 @@
+# 环境变量文件
+.env
+
+# Python缓存文件夹
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Chrome数据文件夹
+chrome_data/*
+!chrome_data/.gitkeep
+
+# tweets文件夹
+tweets/*
+!tweets/.gitkeep
