@@ -37,16 +37,16 @@ def push_alpha_to_telegram(tweet_data, message_index=None, total_count=None):
     header = ""
     if message_index is not None:
         if total_count is not None:
-            header = f"🔢 第 {message_index} 条 (共 {total_count} 条)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+            header = f"第 {message_index} 条 (共 {total_count} 条)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
         else:
-            header = f"🔢 第 {message_index} 条\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+            header = f"第 {message_index} 条\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
     
     # 构建推送消息模板（优化格式）
     message = (
         f"{header}"
-        f"💡 <b>推荐理由</b>\n{tweet_data['recommendation_reason']}\n\n"
-        f"👤 <b>发帖者</b>\n{tweet_data['username']} {tweet_data['author_id']} ⏰ {tweet_data['time_since_published']}前\n\n"
-        f"📝 <b>推文内容</b>\n<i>{tweet_data['tweet_text']}</i>\n\n"
+        f"💡 <b>推荐理由</b>：{tweet_data['recommendation_reason']}\n\n"
+        f"📝 <b>推文内容</b>\n{tweet_data['username']} {tweet_data['author_id']} {tweet_data['time_since_published']}前\n\n"
+        f"<i>{tweet_data['tweet_text']}</i>\n\n"
         f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     )
     
