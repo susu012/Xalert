@@ -3,7 +3,7 @@ import telegram
 import asyncio
 from dotenv import load_dotenv
 
-def push_alpha_to_telegram(tweet_data):
+def push_alpha_to_telegram(tweet_data, message_index=None, total_count=None):
     """
     将Alpha信息推送到Telegram群组
     
@@ -14,6 +14,8 @@ def push_alpha_to_telegram(tweet_data):
                    - author_id: @开头的用户ID
                    - time_since_published: 距离发帖的时间
                    - tweet_text: 推文内容
+        message_index: 当前消息序号（可选）
+        total_count: 总消息数量（可选）
     """
     # 加载环境变量
     load_dotenv()
@@ -31,11 +33,21 @@ def push_alpha_to_telegram(tweet_data):
     except ValueError:
         raise ValueError("TELEGRAM_CHANNEL_ID必须是有效的整数")
     
-    # 构建推送消息模板
+    # 构建消息头部（包含序号）
+    header = ""
+    if message_index is not None:
+        if total_count is not None:
+            header = f"🔢 第 {message_index} 条 (共 {total_count} 条)\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+        else:
+            header = f"🔢 第 {message_index} 条\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
+    
+    # 构建推送消息模板（优化格式）
     message = (
-        f"📊 推荐理由：{tweet_data['recommendation_reason']}\n\n"
-        f"👤 发帖者：{tweet_data['username']} {tweet_data['author_id']}\n {tweet_data['time_since_published']}前\n"
-        f"📝 推文内容：\n{tweet_data['tweet_text']}\n"
+        f"{header}"
+        f"💡 <b>推荐理由</b>\n{tweet_data['recommendation_reason']}\n\n"
+        f"👤 <b>发帖者</b>\n{tweet_data['username']} {tweet_data['author_id']} ⏰ {tweet_data['time_since_published']}前\n\n"
+        f"📝 <b>推文内容</b>\n<i>{tweet_data['tweet_text']}</i>\n\n"
+        f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     )
     
     # 发送消息到Telegram
@@ -74,17 +86,18 @@ def push_all_alpha_tweets(recommended_tweets_array):
         print("📭 没有发现Alpha信息，无需推送")
         return
     
-    print(f"📢 发现 {len(recommended_tweets_array)} 条Alpha信息，开始推送...")
+    total_count = len(recommended_tweets_array)
+    print(f"📢 发现 {total_count} 条Alpha信息，开始推送...")
     
     for i, tweet_data in enumerate(recommended_tweets_array, 1):
         try:
-            print(f"📤 正在推送第 {i}/{len(recommended_tweets_array)} 条Alpha信息...")
-            push_alpha_to_telegram(tweet_data)
+            print(f"📤 正在推送第 {i}/{total_count} 条Alpha信息...")
+            push_alpha_to_telegram(tweet_data, message_index=i, total_count=total_count)
             
             # 如果有多条消息，添加短暂延迟避免频率限制
-            if i < len(recommended_tweets_array):
+            if i < total_count:
                 import time
-                time.sleep(2)  # 延迟2秒
+                time.sleep(0.5)  # 延迟0.5秒
                 
         except Exception as e:
             print(f"❌ 推送第 {i} 条Alpha信息失败: {str(e)}")
