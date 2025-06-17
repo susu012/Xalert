@@ -34,7 +34,7 @@ def main_progress():
         
         # 循环json调用推送函数，推送到telegram
         if recommended_tweets:
-            push.push_all_alpha_tweets(recommended_tweets)
+            push.push_all_alpha_tweets_combined(recommended_tweets)
         else:
             print("📭 本次分析未发现Alpha信息，无需推送")
             
