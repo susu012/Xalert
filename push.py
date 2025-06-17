@@ -270,7 +270,6 @@ def push_all_alpha_tweets(recommended_tweets_array):
             print(f"❌ 推送第 {i} 条Alpha信息失败: {str(e)}")
             continue
     
-    print(f"🎉 Alpha信息推送完成！")
 
 # 示例用法
 if __name__ == "__main__":
